@@ -1,0 +1,9 @@
+target/
+data/
+.idea/
+*.log
+.env
+.env.*
+!.env.example
+*.pem
+*.key

@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="uk" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: head('Реєстрація')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: header}"></header>
+<main class="shell page">
+    <section class="form-panel card">
+        <p class="eyebrow">Акаунт / Реєстрація</p>
+        <h1>Створення акаунту</h1>
+        <p class="muted">Новий акаунт отримує роль користувача.</p>
+        <p class="notice error" th:if="${error != null}" th:text="${error}" role="alert"></p>
+        <form class="form" th:action="@{/registration}" method="post">
+            <label for="username">Логін</label>
+            <input id="username" name="username" autocomplete="username" minlength="3" maxlength="32"
+                   aria-describedby="username-hint" th:value="${username}" required>
+            <p class="hint" id="username-hint">3–32 латинські літери, цифри або символи _ . -</p>
+            <label for="password">Пароль</label>
+            <input id="password" name="password" type="password" autocomplete="new-password" minlength="8"
+                   maxlength="72" aria-describedby="password-hint" required>
+            <p class="hint" id="password-hint">Щонайменше 8 символів, до 72 байтів.</p>
+            <button type="submit" class="button primary">Створити акаунт</button>
+        </form>
+        <p class="form-link">Вже маєте акаунт? <a th:href="@{/login}">Увійти</a></p>
+    </section>
+</main>
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+</body>
+</html>

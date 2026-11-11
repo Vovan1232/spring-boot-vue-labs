@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="uk" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: head('Головна')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: header}"></header>
+<main class="shell page">
+    <section class="hero">
+        <p class="eyebrow">Лабораторна робота 07</p>
+        <h1>Керування доступом</h1>
+        <p>Створіть акаунт, увійдіть і відкрийте розділи, доступні для вашої ролі.</p>
+        <div class="actions" sec:authorize="isAnonymous()">
+            <a class="button hero-primary" th:href="@{/login}">Увійти</a>
+            <a class="button hero-secondary" th:href="@{/registration}">Створити акаунт</a>
+        </div>
+        <div class="actions" sec:authorize="isAuthenticated()">
+            <a class="button hero-primary" th:href="@{/user}">Відкрити кабінет</a>
+        </div>
+    </section>
+
+    <section class="overview" aria-labelledby="roles-title">
+        <p class="eyebrow">Права доступу</p>
+        <h2 id="roles-title">Розділи за ролями</h2>
+        <div class="roles-grid">
+            <article class="card"><span class="pill">USER</span><h3>Кабінет</h3><p>Доступний усім користувачам після входу.</p></article>
+            <article class="card"><span class="pill">MANAGER</span><h3>Менеджер</h3><p>Сторінку менеджера відкриває лише ця роль.</p></article>
+            <article class="card"><span class="pill">ADMIN</span><h3>Адміністратор</h3><p>Панель показує кількість активних користувачів.</p></article>
+        </div>
+    </section>
+</main>
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+</body>
+</html>

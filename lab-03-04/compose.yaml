@@ -1,0 +1,35 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: chytalnia
+      POSTGRES_USER: chytalnia
+      POSTGRES_PASSWORD: chytalnia
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - articles_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U chytalnia -d chytalnia"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+  api:
+    build: ./backend
+    environment:
+      DB_URL: jdbc:postgresql://db:5432/chytalnia
+      DB_USER: chytalnia
+      DB_PASSWORD: chytalnia
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:8080:8080"
+  web:
+    build: ./frontend
+    depends_on:
+      - api
+    ports:
+      - "127.0.0.1:5173:80"
+volumes:
+  articles_data:

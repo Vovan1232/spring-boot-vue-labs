@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="uk" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: head('Вхід')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: header}"></header>
+<main class="shell page">
+    <section class="form-panel card">
+        <p class="eyebrow">Акаунт / Вхід</p>
+        <h1>Вхід до кабінету</h1>
+        <p class="muted">Введіть логін і пароль свого акаунту.</p>
+        <p class="notice success" th:if="${param.registered != null}" role="status">Акаунт створено. Тепер можна увійти.</p>
+        <p class="notice warning" th:if="${param.expired != null}" role="status">Цю сесію завершено через вхід з іншого браузера. Увійдіть знову, щоб продовжити.</p>
+        <p class="notice error" th:if="${param.error != null}" role="alert">Неправильний логін або пароль.</p>
+        <form class="form" th:action="@{/login}" method="post">
+            <label for="username">Логін</label>
+            <input id="username" name="username" autocomplete="username" maxlength="32" required>
+            <label for="password">Пароль</label>
+            <input id="password" name="password" type="password" autocomplete="current-password" required>
+            <button type="submit" class="button primary">Увійти в акаунт</button>
+        </form>
+        <p class="form-link">Ще немає акаунту? <a th:href="@{/registration}">Зареєструватися</a></p>
+    </section>
+</main>
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+</body>
+</html>

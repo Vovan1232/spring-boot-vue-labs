@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="uk" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:fragment="head(title)">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="| ${title} · Читальня |">Читальня</title>
+    <link rel="stylesheet" th:href="@{/app.css}">
+</head>
+<body>
+<header class="header" th:fragment="header">
+    <div class="shell header-inner">
+        <a class="brand" th:href="@{/}">
+            <span class="mark" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.7">
+                    <rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 1 1 8 0v3m-4 4v3"/>
+                </svg>
+            </span>
+            Читальня
+        </a>
+        <nav aria-label="Основна навігація">
+            <a th:href="@{/}">Головна</a>
+            <a sec:authorize="isAnonymous()" th:href="@{/login}">Увійти</a>
+            <a sec:authorize="isAnonymous()" th:href="@{/registration}">Реєстрація</a>
+            <a sec:authorize="isAuthenticated()" th:href="@{/user}">Кабінет</a>
+            <a sec:authorize="hasAuthority('ROLE_MANAGER')" th:href="@{/manager}">Менеджер</a>
+            <a sec:authorize="hasAuthority('ROLE_ADMIN')" th:href="@{/admin}">Адміністратор</a>
+        </nav>
+        <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post">
+            <button type="submit" class="button outline">Вийти</button>
+        </form>
+        <span sec:authorize="isAnonymous()" class="tag">Лабораторна 07</span>
+    </div>
+</header>
+<footer class="shell footer" th:fragment="footer">Читальня <span>·</span> Spring Security <span>·</span> Лабораторна робота № 7</footer>
+</body>
+</html>

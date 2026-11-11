@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="uk" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: head('Панель адміністратора')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: header}"></header>
+<main class="shell page">
+    <section class="card area">
+        <p class="eyebrow">Захищений розділ / Адміністратор</p>
+        <h1>Панель адміністратора</h1>
+        <p>Ви увійшли як <strong sec:authentication="name"></strong>.</p>
+        <dl class="details"><div><dt>Маршрут</dt><dd><code>/admin</code></dd></div>
+            <div><dt>Необхідна роль</dt><dd><code>ROLE_ADMIN</code></dd></div>
+            <div><dt>Активні користувачі</dt><dd data-testid="active-users" th:text="${activeUsers}"></dd></div>
+        </dl>
+    </section>
+</main>
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+</body>
+</html>

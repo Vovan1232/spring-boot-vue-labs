@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="uk" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Бібліографічний аналізатор · Читальня</title>
+    <link rel="stylesheet" th:href="@{/app.css}">
+    <script th:src="@{/app.js}" defer></script>
+</head>
+<body>
+<header class="top">
+    <div class="wrap top-inner">
+        <a th:href="@{/}">Читальня <span> / </span> AI</a>
+        <span class="label">Лабораторна робота № 5</span>
+    </div>
+</header>
+<main class="wrap">
+    <section class="intro">
+        <p class="label">Spring AI · GPT-4o-mini</p>
+        <h1>Бібліографічний аналізатор</h1>
+        <p>Вставте цитування, щоб отримати структурований запис про статтю.</p>
+    </section>
+
+    <section class="panel" aria-labelledby="input-title">
+        <div class="panel-head">
+            <div><p class="label">01 / Вхідні дані</p><h2 id="input-title">Текст цитування</h2></div>
+            <button class="secondary" type="button" id="example">Підставити приклад</button>
+        </div>
+        <form th:action="@{/generate-all}" method="post">
+            <label class="visually-hidden" for="message">Текст цитування</label>
+            <textarea id="message" name="message" rows="5" maxlength="6000" required
+                      placeholder="Автор, назва статті, журнал, рік, сторінки, DOI…" th:text="${message}"></textarea>
+            <template id="sample" th:text="${example}"></template>
+            <div class="actions">
+                <button class="primary" type="submit">Структурувати цитування</button>
+                <p th:if="${apiKeyConfigured}">Під час генерації текст надсилається до налаштованого API.</p>
+                <p th:unless="${apiKeyConfigured}">Для генерації задайте <code>OPENAI_API_KEY</code> перед запуском.</p>
+            </div>
+        </form>
+    </section>
+
+    <section class="panel" th:if="${error != null}" role="alert">
+        <p class="label">02 / Результат</p>
+        <h2>Не вдалося завершити генерацію</h2>
+        <p class="error" th:text="${error}"></p>
+        <p class="muted" th:text="|Час обробки: ${elapsedMs} мс|"></p>
+    </section>
+
+    <section class="panel" th:if="${article != null}" aria-labelledby="result-title">
+        <div class="panel-head">
+            <div><p class="label">02 / Результат</p><h2 id="result-title">Структурований запис</h2></div>
+            <span class="badge" th:text="|Час генерації: ${elapsedMs} мс|"></span>
+        </div>
+        <div class="summary">
+            <p class="label">Назва статті</p>
+            <h3 th:text="${article.titleOfTheArticle().isEmpty() ? 'Не зазначено' : article.titleOfTheArticle()}"></h3>
+            <dl class="facts">
+                <div><dt>Сторінок</dt><dd th:text="${article.totalVolumeOfPrintedSheets()}"></dd></div>
+                <div><dt>Мова</dt><dd th:text="${article.language().isEmpty() ? '—' : article.language()}"></dd></div>
+                <div><dt>В Україні</dt><dd th:text="${article.publishedInUkraine()}"></dd></div>
+            </dl>
+        </div>
+        <details>
+            <summary th:text="|Усі поля (${fields.size()})|"></summary>
+            <dl class="fields">
+                <div th:each="field : ${fields}">
+                    <dt th:text="${field.key}"></dt>
+                    <dd th:text="${field.value.isEmpty() ? '—' : field.value}"></dd>
+                </div>
+            </dl>
+        </details>
+    </section>
+</main>
+<footer class="wrap footer">Читальня AI <span>·</span> Spring Boot MVC <span>·</span> Thymeleaf</footer>
+</body>
+</html>

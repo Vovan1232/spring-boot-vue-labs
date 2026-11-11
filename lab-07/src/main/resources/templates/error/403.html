@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="uk" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: head('Доступ заборонено')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: header}"></header>
+<main class="shell page">
+    <section class="card area">
+        <p class="eyebrow error-code">HTTP 403</p>
+        <h1>Доступ заборонено</h1>
+        <p>Ваш акаунт не має дозволу на цю дію.</p>
+        <a class="button outline" th:href="@{/}">Повернутися на головну</a>
+    </section>
+</main>
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+</body>
+</html>

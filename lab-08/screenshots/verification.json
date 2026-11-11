@@ -1,0 +1,16 @@
+{
+  "environment": "Local Windows validation with real Nginx, PostgreSQL and production JAR",
+  "httpsCertificate": "Temporary local certificate, not a public certificate",
+  "checks": [
+    "production profile",
+    "Flyway schema",
+    "restricted PostgreSQL role",
+    "real Nginx HTTPS",
+    "HTTP to HTTPS redirect",
+    "forwarded secure scheme",
+    "Secure HttpOnly SameSite=Lax JSESSIONID",
+    "single-session login",
+    "account persists after application restart",
+    "health UP"
+  ]
+}

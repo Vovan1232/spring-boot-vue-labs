@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="uk" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: head('Кабінет користувача')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: header}"></header>
+<main class="shell page">
+    <section class="card area">
+        <p class="eyebrow">Захищений розділ / Кабінет</p>
+        <h1>Кабінет користувача</h1>
+        <p>Ви увійшли як <strong sec:authentication="name"></strong>.</p>
+        <dl class="details"><div><dt>Маршрут</dt><dd><code>/user</code></dd></div>
+            <div><dt>Активна роль</dt><dd><code sec:authentication="authorities"></code></dd></div>
+        </dl>
+        <p class="muted">Цей розділ доступний ролям USER, MANAGER і ADMIN.</p>
+    </section>
+</main>
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+</body>
+</html>
