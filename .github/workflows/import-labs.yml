@@ -1,0 +1,43 @@
+name: Import laboratory files
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: import-laboratory-files
+  cancel-in-progress: false
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Unpack prepared projects and reports
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path, PurePosixPath
+          from zipfile import ZipFile
+          archive_path = Path('Chytalnia-All-Labs-GitHub.zip')
+          if not archive_path.is_file():
+              raise SystemExit('The prepared archive is missing.')
+          with ZipFile(archive_path) as archive:
+              entries = archive.infolist()
+              for entry in entries:
+                  name = PurePosixPath(entry.filename)
+                  if name.is_absolute() or '..' in name.parts or (name.parts and name.parts[0] == '.github'):
+                      raise SystemExit('Unexpected path in archive.')
+              archive.extractall('.')
+              print('Imported files:', sum(not entry.is_dir() for entry in entries))
+          PY
+      - name: Save laboratory folders
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .
+          git rm -- Chytalnia-All-Labs-GitHub.zip
+          git commit -m 'Add laboratory projects 3-8 and reports'
+          git push origin HEAD:main
